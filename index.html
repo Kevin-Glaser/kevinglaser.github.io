@@ -1,0 +1,55 @@
+---
+layout: default
+title: Home
+---
+
+<style>
+.home-content {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.home-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.home-content .description {
+    color: var(--secondary);
+    font-size: 1.1em;
+    margin-bottom: 40px;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 36px;
+    background-color: var(--entry);
+    color: var(--primary);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1em;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--tertiary);
+    border-color: var(--secondary);
+    text-decoration: none;
+}
+</style>
+
+<div class="home-content">
+    <h1>{{ site.title }}</h1>
+    <p class="description">{{ site.description }}</p>
+    <div class="buttons">
+        <a href="/posts/" class="btn">Blog</a>
+        <a href="/about/" class="btn">About</a>
+    </div>
+</div>

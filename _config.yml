@@ -1,0 +1,8 @@
+title: kevinglaser
+author: Kevin Glaser
+description: Blog
+baseurl: ""
+url: "https://kevin-glaser.github.io"
+theme: jekyll-theme-minimal
+markdown: kramdown
+permalink: /posts/:title/

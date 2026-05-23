@@ -1,0 +1,79 @@
+---
+layout: default
+title: Blog
+permalink: /posts/
+---
+
+<style>
+.page-header { margin-bottom: 40px; }
+.page-header h1 { font-size: 2em; margin-bottom: 10px; }
+.subtitle { color: var(--secondary); font-size: 1.1em; }
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-entry {
+    background-color: var(--entry);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.post-entry:hover {
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+.post-entry a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.entry-header h2 {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+.entry-content {
+    color: var(--content);
+    margin-bottom: 12px;
+    font-size: 0.95em;
+}
+
+.entry-footer {
+    color: var(--secondary);
+    font-size: 0.85em;
+}
+
+.post-entry:hover h2 { color: var(--accent); }
+</style>
+
+<header class="page-header">
+    <h1>Blog</h1>
+    <p class="subtitle">Technical write-ups and articles</p>
+</header>
+
+<div class="post-list">
+    {% for post in site.posts %}
+    <article class="post-entry">
+        <a href="{{ post.url }}">
+            <header class="entry-header">
+                <h2>{{ post.title }}</h2>
+            </header>
+            <div class="entry-content">
+                <p>{{ post.description }}</p>
+            </div>
+            <footer class="entry-footer">
+                {{ post.date | date: "%B %d, %Y" }}
+            </footer>
+        </a>
+    </article>
+    {% endfor %}
+</div>
