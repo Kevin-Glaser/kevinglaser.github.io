@@ -2,6 +2,7 @@
 layout: page
 title: About
 permalink: /about/
+description: AI researcher focused on the applications of artificial intelligence
 ---
 
 # About
