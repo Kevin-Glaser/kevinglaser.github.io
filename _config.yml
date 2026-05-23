@@ -3,6 +3,6 @@ author: Kevin Glaser
 description: Blog
 baseurl: ""
 url: "https://kevin-glaser.github.io"
-theme: jekyll-theme-minimal
+theme: minima
 markdown: kramdown
 permalink: /posts/:title/
