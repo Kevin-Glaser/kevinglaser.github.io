@@ -1,8 +1,7 @@
-title: kevinglaser
+title: Kevin Glaser's Blog
 author: Kevin Glaser
-description: Blog
-baseurl: ""
+description: AI Research · Systems · Distributed Storage · Cloud
+baseurl: "/kevinglaser.github.io"
 url: "https://kevin-glaser.github.io"
-theme: minima
 markdown: kramdown
 permalink: /posts/:title/

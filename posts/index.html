@@ -5,76 +5,85 @@ permalink: /posts/
 ---
 
 <style>
-.post-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
+    .blog-header {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+    }
 
-.post-entry {
-    padding: 20px 0;
-    border-bottom: 1px solid #e5e5e5;
-    transition: all 0.2s;
-}
+    .blog-header h1 {
+        margin-bottom: 8px;
+    }
 
-.post-entry:last-child {
-    border-bottom: none;
-}
+    .blog-description {
+        color: var(--text-secondary);
+        font-size: 1.05em;
+        margin: 0;
+    }
 
-.post-entry:hover {
-    padding-left: 8px;
-}
+    .post-list {
+        display: flex;
+        flex-direction: column;
+    }
 
-.post-entry a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
+    .post-entry {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border);
+        transition: padding-left 0.15s;
+    }
 
-.entry-header h2 {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #1a1a1a;
-}
+    .post-entry:last-child {
+        border-bottom: none;
+    }
 
-.post-entry:hover .entry-header h2 {
-    color: #2563eb;
-}
+    .post-entry:hover {
+        padding-left: 6px;
+    }
 
-.entry-content {
-    color: #666;
-    margin-bottom: 8px;
-    font-size: 0.95em;
-}
+    .post-entry a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
 
-.entry-footer {
-    color: #999;
-    font-size: 0.85em;
-}
+    .post-entry:hover .entry-title {
+        color: var(--accent);
+    }
+
+    .entry-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin-bottom: 6px;
+        transition: color 0.15s;
+    }
+
+    .entry-description {
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+        font-size: 0.95em;
+    }
+
+    .entry-meta {
+        color: var(--text-tertiary);
+        font-size: 0.85em;
+    }
 </style>
 
-<div style="padding-top: 80px;">
-    <header style="margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;">
-        <h1 style="font-size: 2em; font-weight: 700; margin-bottom: 8px;">Blog</h1>
-        <p style="color: #666; font-size: 1.1em; margin: 0;">Technical write-ups and articles</p>
-    </header>
+<header class="blog-header">
+    <h1>Blog</h1>
+    <p class="blog-description">Technical write-ups and articles</p>
+</header>
 
-    <div class="post-list">
-        {% for post in site.posts %}
-        <article class="post-entry">
-            <a href="{{ post.url }}">
-                <header class="entry-header">
-                    <h2>{{ post.title }}</h2>
-                </header>
-                <div class="entry-content">
-                    <p>{{ post.description }}</p>
-                </div>
-                <footer class="entry-footer">
-                    {{ post.date | date: "%B %d, %Y" }}
-                </footer>
-            </a>
-        </article>
-        {% endfor %}
-    </div>
+<div class="post-list">
+    {% for post in site.posts %}
+    <article class="post-entry">
+        <a href="{{ post.url | prepend: site.baseurl }}">
+            <h2 class="entry-title">{{ post.title }}</h2>
+            {% if post.description %}
+            <p class="entry-description">{{ post.description }}</p>
+            {% endif %}
+            <div class="entry-meta">{{ post.date | date: "%B %d, %Y" }}</div>
+        </a>
+    </article>
+    {% endfor %}
 </div>
