@@ -6,8 +6,8 @@ permalink: /posts/
 
 <style>
     .blog-header {
-        margin-bottom: 40px;
-        padding-bottom: 20px;
+        margin-bottom: 48px;
+        padding-bottom: 24px;
         border-bottom: 1px solid var(--border);
     }
 
@@ -21,51 +21,76 @@ permalink: /posts/
         margin: 0;
     }
 
-    .post-list {
-        display: flex;
-        flex-direction: column;
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 
-    .post-entry {
-        padding: 20px 0;
-        border-bottom: 1px solid var(--border);
-        transition: padding-left 0.15s;
+    @media (max-width: 640px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
-    .post-entry:last-child {
-        border-bottom: none;
-    }
-
-    .post-entry:hover {
-        padding-left: 6px;
-    }
-
-    .post-entry a {
+    .category-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
         text-decoration: none;
         color: inherit;
         display: block;
+        position: relative;
     }
 
-    .post-entry:hover .entry-title {
-        color: var(--accent);
+    .category-card:hover {
+        border-color: #c0c0c0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        color: inherit;
     }
 
-    .entry-title {
-        font-size: 1.2em;
-        font-weight: 600;
+    .card-title {
+        font-size: 1.15em;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--text);
         margin-bottom: 6px;
         transition: color 0.15s;
     }
 
-    .entry-description {
-        color: var(--text-secondary);
-        margin-bottom: 6px;
-        font-size: 0.95em;
+    .category-card:hover .card-title {
+        color: var(--accent);
     }
 
-    .entry-meta {
+    .card-description {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+        margin: 0 0 14px;
+        line-height: 1.6;
+    }
+
+    .card-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         color: var(--text-tertiary);
-        font-size: 0.85em;
+        font-size: 0.82em;
+    }
+
+    .card-arrow {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-tertiary);
+        font-size: 1.1em;
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .category-card:hover .card-arrow {
+        color: var(--accent);
+        transform: translateY(-50%) translateX(4px);
     }
 </style>
 
@@ -74,16 +99,65 @@ permalink: /posts/
     <p class="blog-description">Technical write-ups and articles</p>
 </header>
 
-<div class="post-list">
-    {% for post in site.posts %}
-    <article class="post-entry">
-        <a href="{{ post.url | prepend: site.baseurl }}">
-            <h2 class="entry-title">{{ post.title }}</h2>
-            {% if post.description %}
-            <p class="entry-description">{{ post.description }}</p>
-            {% endif %}
-            <div class="entry-meta">{{ post.date | date: "%B %d, %Y" }}</div>
-        </a>
-    </article>
-    {% endfor %}
-</div>
+<div id="blog-categories" class="category-grid"></div>
+
+<script>
+const siteBaseurl = {{ site.baseurl | jsonify }};
+const posts = [
+{% for post in site.posts %}
+{
+    title: {{ post.title | jsonify }},
+    url: {{ post.url | prepend: site.baseurl | jsonify }},
+    description: {{ post.description | jsonify }},
+    date: {{ post.date | date: "%B %d, %Y" | jsonify }},
+    path: {{ post.path | jsonify }}
+}{% unless forloop.last %},{% endunless %}
+{% endfor %}
+];
+
+const categories = {};
+posts.forEach(function(post) {
+    const parts = post.path.split('/');
+    let cat = 'Uncategorized';
+    if (parts.length > 2 && parts[0] === '_posts') {
+        cat = parts[1];
+    }
+    if (!categories[cat]) {
+        categories[cat] = [];
+    }
+    categories[cat].push(post);
+});
+
+const container = document.getElementById('blog-categories');
+Object.keys(categories).sort().forEach(function(cat) {
+    const catPosts = categories[cat];
+    const card = document.createElement('a');
+    card.className = 'category-card';
+    card.href = siteBaseurl + '/posts/category/?cat=' + encodeURIComponent(cat);
+
+    const title = document.createElement('div');
+    title.className = 'card-title';
+    title.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+    const desc = document.createElement('p');
+    desc.className = 'card-description';
+    desc.textContent = 'Notes and articles about ' + cat.toLowerCase() + '.';
+
+    const meta = document.createElement('div');
+    meta.className = 'card-meta';
+    const latestDate = catPosts[0].date;
+    meta.innerHTML = '<span>' + catPosts.length + ' post' + (catPosts.length > 1 ? 's' : '') + '</span>' +
+        '<span>\u00B7</span>' +
+        '<span>Latest: ' + latestDate + '</span>';
+
+    const arrow = document.createElement('span');
+    arrow.className = 'card-arrow';
+    arrow.textContent = '\u2192';
+
+    card.appendChild(title);
+    card.appendChild(desc);
+    card.appendChild(meta);
+    card.appendChild(arrow);
+    container.appendChild(card);
+});
+</script>
