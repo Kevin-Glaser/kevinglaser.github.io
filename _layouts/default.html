@@ -30,6 +30,10 @@
             line-height: 1.7;
             font-size: 17px;
             -webkit-font-smoothing: antialiased;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         a { color: var(--text); text-decoration: none; transition: color 0.15s; }
@@ -246,6 +250,15 @@
 
     <script>
     (function() {
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.addEventListener('copy', function(e) { e.preventDefault(); });
+        document.addEventListener('cut', function(e) { e.preventDefault(); });
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a')) {
+                e.preventDefault();
+            }
+        });
+
         var toc = document.querySelector('.toc ul');
         if (!toc) return;
         var content = document.querySelector('.post-content');
